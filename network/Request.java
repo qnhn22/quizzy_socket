@@ -48,6 +48,7 @@ public class Request implements Runnable {
     ArrayList<String> optionsQ1 = new ArrayList<>();
     int count = 0;
     int score = 0;
+    ArrayList<Question> questions = game.getQuestions();
 
     while (true) {
 

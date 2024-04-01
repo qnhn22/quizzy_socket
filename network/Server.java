@@ -14,7 +14,9 @@ public final class Server {
   public static void main(String argv[]) throws Exception {
     int port = 6789;
     ServerSocket socket = new ServerSocket(port);
+    HashMap<Integer> checkIndices = new ArrayList<>();
 
+    ArrayList<String> optionsQ1 = new ArrayList<>();
     optionsQ1.add("Earth");
     optionsQ1.add("Mars");
     optionsQ1.add("Jupiter");
@@ -36,11 +38,14 @@ public final class Server {
     questions.add(q1);
     questions.add(q2);
     questions.add(q3);
+    for (int i = 0; i < questions.size(); i++) {
+      checkIndices.add(0);
+    }
     Game game = new Game(questions, "1234", "2234");
-    ArrayList<Question> gameQuestions = game.getQuestions();
 
     while (true) {
       Socket connection = socket.accept();
+
       // Construct an object to process the HTTP request message.
       Request request = new Request(connection, game);
 
