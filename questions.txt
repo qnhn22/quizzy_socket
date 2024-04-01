@@ -1,0 +1,21 @@
+Question,Option A,Option B,Option C,Option D,Answer
+What is the capital of France?,Paris,London,Berlin,Rome,A
+What is the largest planet in our solar system?,Earth,Mars,Jupiter,Saturn,C
+Who wrote 'To Kill a Mockingbird'?,J.K. Rowling,Stephen King,Harper Lee,George Orwell,C
+Which country is known as the Land of the Rising Sun?,China,Japan,South Korea,India,B
+What is the chemical symbol for water?,W,H2O,HO,WA,B
+Which famous scientist developed the theory of relativity?,Isaac Newton,Albert Einstein,Galileo Galilei,Stephen Hawking,B
+What is the tallest mammal in the world?,Giraffe,Elephant,Hippopotamus,Rhinoceros,A
+Which planet is known as the Red Planet?,Earth,Mars,Venus,Jupiter,B
+Who painted the Mona Lisa?,Pablo Picasso,Leonardo da Vinci,Vincent van Gogh,Michelangelo,B
+What is the chemical symbol for gold?,G,Au,Ag,Gl,B
+Which continent is the largest by land area?,Africa,Asia,Europe,North America,B
+Who is credited with the invention of the telephone?,Thomas Edison,Alexander Graham Bell,Nikola Tesla,Guglielmo Marconi,B
+What is the capital of Japan?,Tokyo,Beijing,Seoul,Bangkok,A
+What is the largest ocean on Earth?,Atlantic Ocean,Indian Ocean,Arctic Ocean,Pacific Ocean,D
+Who wrote the play 'Romeo and Juliet'?,William Shakespeare,Charles Dickens,Jane Austen,Mark Twain,A
+What is the currency of the United Kingdom?,Dollar,Euro,Pound,Yen,C
+Which element has the chemical symbol Fe?,Iron,Silver,Gold,Aluminum,A
+Who was the first man to walk on the moon?,Neil Armstrong,Buzz Aldrin,Yuri Gagarin,John Glenn,A
+What is the largest desert in the world?,Sahara Desert,Gobi Desert,Arabian Desert,Antarctic Desert,A
+Who is known as the Father of Computer Science?,Bill Gates,Alan Turing,Steve Jobs,Tim Berners-Lee,B
