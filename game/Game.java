@@ -9,10 +9,10 @@ public class Game {
   private boolean on; // indicate whether the game is still on or done
   private Host host;
   private ArrayList<Player> players;
-  // Dzung: pin? multiple host 
-  // Dzung: pin == code or not? 
-  
-  public Game(ArrayList<Question> questions, String code, String pin, boolean on) {
+  // Dzung: pin? multiple host
+  // Dzung: pin == code or not?
+
+  public Game(ArrayList<Question> questions, String code, String pin) {
     this.questions = questions;
     this.code = code;
     this.pin = pin;
@@ -20,11 +20,14 @@ public class Game {
     this.players = new ArrayList<Player>();
   }
 
-  public void updateScores(Question q) {
-    for (Player p : this.players) {
-      if (p.getAnswer() == q.getAnswer()) {
-        p.updateScore();
-      } 
+  public ArrayList<Question> getQuestions() {
+    return this.questions;
+  }
+
+  public void updatePlayerScore(Question q, int playerIndex) {
+    Player p = this.players.get(playerIndex);
+    if (p.getAnswer() - 1 == q.getAnswer()) {
+      p.updateScore();
     }
   }
 
@@ -43,15 +46,15 @@ public class Game {
 
   public void play(int questionIdx) {
     // System.out.println("Welcome to Quizzy!!!");
-    // System.out.println("Please answer 1 to 4 correspoding to the order of options for each question");
+    // System.out.println("Please answer 1 to 4 correspoding to the order of options
+    // for each question");
 
     // for (int i = 0; i < this.questions.size(); i++) {
-    //   Question q = this.questions.get(i);
-    //   displayQuestion(q, i);
+    // Question q = this.questions.get(i);
+    // displayQuestion(q, i);
     // }
 
     Question q = this.questions.get(questionIdx);
     displayQuestion(q, questionIdx);
-    this.updateScores(q);
   }
 }
