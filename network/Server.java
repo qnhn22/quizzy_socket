@@ -5,16 +5,18 @@ import java.net.*;
 import java.util.*;
 
 import game.Game;
+import game.Player;
 import game.Question;
 
 /**
  * Completed by Quan Nguyen, Dzung Dinh
  */
 public final class Server {
+
   public static void main(String argv[]) throws Exception {
     int port = 6789;
     ServerSocket socket = new ServerSocket(port);
-    HashMap<Integer> checkIndices = new ArrayList<>();
+    // HashMap<Integer, Player> checkIndices = new ArrayList<>();
 
     ArrayList<String> optionsQ1 = new ArrayList<>();
     optionsQ1.add("Earth");
@@ -38,9 +40,9 @@ public final class Server {
     questions.add(q1);
     questions.add(q2);
     questions.add(q3);
-    for (int i = 0; i < questions.size(); i++) {
-      checkIndices.add(0);
-    }
+    // for (int i = 0; i < questions.size(); i++) {
+    // checkIndices.add(0);
+    // }
     Game game = new Game(questions, "1234", "2234");
 
     while (true) {

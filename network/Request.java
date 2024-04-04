@@ -18,7 +18,6 @@ import game.Question;
  * Completed by Quan Nguyen, Dzung Dinh
  */
 public class Request implements Runnable {
-  final static String CRLF = "\r\n";
   private Socket socket;
   private Game game;
 
@@ -45,33 +44,19 @@ public class Request implements Runnable {
     // Set up input stream filters.
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-    ArrayList<String> optionsQ1 = new ArrayList<>();
-    int count = 0;
-    int score = 0;
-    ArrayList<Question> questions = game.getQuestions();
+    String msg;
 
     while (true) {
-
-      // Get the incoming message from the client (read from socket)
-      if (count < gameQuestions.size()) {
-        Question q = gameQuestions.get(count);
-        os.writeBytes(q.getQuestion());
-        os.writeBytes("\r\n");
-        String msg = br.readLine();
-        if (Integer.parseInt(msg) - 1 == q.getAnswer()) {
-          score += 1;
-        }
-      }
-      count += 1;
-      os.writeBytes("\r\n");
-      os.writeBytes(String.valueOf(score));
-      os.writeBytes("\r\n");
+      os.writeBytes("\n");
+      msg = br.readLine();
+      System.out.println(msg);
+      os.writeBytes(msg + "\n");
     }
 
     // Close streams and socket.
-    os.close();
-    br.close();
-    socket.close();
+    // os.close();
+    // br.close();
+    // socket.close();
   }
 }
 
