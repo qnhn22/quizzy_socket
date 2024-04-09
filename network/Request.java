@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import game.Game;
 import game.Player;
@@ -23,14 +24,16 @@ public class Request implements Runnable {
   private InputStream is;
   private DataOutputStream os;
   private Integer id;
+  private HashMap<Integer, Integer> scores;
 
   // Constructor
-  public Request(Socket socket, Game game, int id) throws Exception {
+  public Request(Socket socket, Game game, int id, HashMap<Integer, Integer> scores) throws Exception {
     this.socket = socket;
     this.game = game;
     is = this.socket.getInputStream();
     os = new DataOutputStream(this.socket.getOutputStream());
     this.id = id;
+    this.scores = scores;
   }
 
   // Implement the run() method of the Runnable interface. public void run()
@@ -43,6 +46,9 @@ public class Request implements Runnable {
   }
 
   private void processRequest() throws Exception {
+    // add player
+    scores.put(id, 0);
+
     // Get a reference to the socket's input and output streams.
     InputStream is = socket.getInputStream();
     DataOutputStream os = new DataOutputStream(socket.getOutputStream());
@@ -66,6 +72,14 @@ public class Request implements Runnable {
       while (msg == null) {
         msg = br.readLine();
         System.out.println("Player " + id + ": " + msg);
+
+        // check if the answer is correct
+        if (game.getQuestions().get(game.getCurrentQuestion()).getAnswer() == Integer.parseInt(msg)) {
+          scores.put(id, scores.get(id) + 1);
+        }
+
+        // print out the score for checking
+        System.out.println("Question " + game.getCurrentQuestion() + " Player " + id + " score: " + scores.get(id));
       }
       // os.writeBytes(msg + "\n");
 
