@@ -3,20 +3,24 @@ package network;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-
+import java.util.concurrent.CountDownLatch;
 import game.Game;
 import game.Player;
 import game.Question;
+import network.Request;
 
 /**
  * Completed by Quan Nguyen, Dzung Dinh
  */
 public final class Server {
+  private static Game game;
+  private static ArrayList<Request> playerConnections;
+  private static CountDownLatch latch;
+  private static HashMap<Integer, Integer> scores;
 
   public static void main(String argv[]) throws Exception {
     int port = 6789;
     ServerSocket socket = new ServerSocket(port);
-    // HashMap<Integer, Player> checkIndices = new ArrayList<>();
 
     ArrayList<String> optionsQ1 = new ArrayList<>();
     optionsQ1.add("Earth");
@@ -40,22 +44,51 @@ public final class Server {
     questions.add(q1);
     questions.add(q2);
     questions.add(q3);
-    // for (int i = 0; i < questions.size(); i++) {
-    // checkIndices.add(0);
-    // }
-    Game game = new Game(questions, "1234", "2234");
+
+    game = new Game(questions);
+    playerConnections = new ArrayList<>();
+    int id = 0;
 
     while (true) {
       Socket connection = socket.accept();
 
       // Construct an object to process the HTTP request message.
-      Request request = new Request(connection, game);
+      Request request = new Request(connection, game, id);
 
-      // Create a new thread to process the request.
-      Thread thread = new Thread(request);
+      if (connection.isConnected()) {
+        playerConnections.add(request);
 
-      // Start the thread.
-      thread.start();
+        // Create a new thread to process the request.
+        Thread thread = new Thread(request);
+
+        // Start the thread.
+        thread.start();
+
+        id += 1;
+      }
     }
   }
+
+  public static synchronized void sendQuestionToAllPlayers() {
+    int curIndex = game.getCurrentQuestion(); // the index of current question in the question list
+    System.out.println(playerConnections.size());
+    for (Request player : playerConnections) {
+      String questionText = game.getQuestions().get(curIndex).getQuestion();
+      try {
+        player.sendQuestion(questionText);
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+      }
+    }
+    if (game.getCurrentQuestion() < game.getQuestions().size()) {
+      game.updateCurrentQuestion();
+    } else {
+      System.out.println("End game.");
+    }
+  }
+
+  public static boolean isEnd() {
+    return game.isEnd();
+  }
+
 }

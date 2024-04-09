@@ -20,11 +20,17 @@ import game.Question;
 public class Request implements Runnable {
   private Socket socket;
   private Game game;
+  private InputStream is;
+  private DataOutputStream os;
+  private Integer id;
 
   // Constructor
-  public Request(Socket socket, Game game) throws Exception {
+  public Request(Socket socket, Game game, int id) throws Exception {
     this.socket = socket;
     this.game = game;
+    is = this.socket.getInputStream();
+    os = new DataOutputStream(this.socket.getOutputStream());
+    this.id = id;
   }
 
   // Implement the run() method of the Runnable interface. public void run()
@@ -44,13 +50,26 @@ public class Request implements Runnable {
     // Set up input stream filters.
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-    String msg;
+    String msg = null;
+
+    // os.writeBytes("Welcome!!!\n");
+
+    Thread.sleep(5000);
 
     while (true) {
-      os.writeBytes("\n");
-      msg = br.readLine();
-      System.out.println(msg);
-      os.writeBytes(msg + "\n");
+
+      if (id == 0) {
+        Server.sendQuestionToAllPlayers();
+        // sendQuestion(game.getQuestions().get(0).getQuestion());
+      }
+
+      while (msg == null) {
+        msg = br.readLine();
+        System.out.println("Player " + id + ": " + msg);
+      }
+      // os.writeBytes(msg + "\n");
+
+      Thread.sleep(30000);
     }
 
     // Close streams and socket.
@@ -58,16 +77,8 @@ public class Request implements Runnable {
     // br.close();
     // socket.close();
   }
-}
 
-// while (true) {
-// // Get the incoming message from the client (read from socket)
-// String msg = br.readLine();
-// //Print message received from client
-// System.out.println("Received from client: "); System.out.println(msg);
-// //convert message to upper case
-// String outputMsg = msg.toUpperCase();
-// //Send modified msg back to client (write to socket)
-// os.writeBytes(outputMsg); os.writeBytes("\r\n"); System.out.println("Sent to
-// client: ");
-// }
+  public void sendQuestion(String question) throws Exception {
+    os.writeBytes(question + "\n");
+  }
+}

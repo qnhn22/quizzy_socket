@@ -19,15 +19,23 @@ class Client {
     BufferedReader inFromServer = new BufferedReader(new InputStreamReader(
         clientSocket.getInputStream()));
 
+    int questionNo = 1;
+
     while (true) {
       question = inFromServer.readLine();
 
-      System.out.println("Please select your answer (1 to 4):");
+      if (question.length() != 0) {
+        System.out.println("Question " + questionNo + ": " + question);
+        System.out.println("Please select your answer (1 to 4):");
+        questionNo += 1;
+      }
 
       answer = inFromUser.readLine();
 
-      outToServer.writeBytes(answer + "\n");
-
+      if (answer.length() != 0) {
+        System.out.println(answer);
+        outToServer.writeBytes(answer + "\n");
+      }
     }
   }
 }

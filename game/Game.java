@@ -4,20 +4,15 @@ import java.util.ArrayList;
 
 public class Game {
   private ArrayList<Question> questions;
-  private String code; // the room code created by a host
-  private String pin; // the pin to enter the room
-  private boolean on; // indicate whether the game is still on or done
-  private Host host;
   private ArrayList<Player> players;
-  // Dzung: pin? multiple host
-  // Dzung: pin == code or not?
+  private Integer count; // handle concurrency
+  private Integer curQuestionIdx; // store current question index
 
-  public Game(ArrayList<Question> questions, String code, String pin) {
+  public Game(ArrayList<Question> questions) {
     this.questions = questions;
-    this.code = code;
-    this.pin = pin;
-    this.on = false;
     this.players = new ArrayList<Player>();
+    this.count = this.players.size();
+    this.curQuestionIdx = 0;
   }
 
   public ArrayList<Question> getQuestions() {
@@ -56,5 +51,33 @@ public class Game {
 
     Question q = this.questions.get(questionIdx);
     displayQuestion(q, questionIdx);
+  }
+
+  public Integer getCount() {
+    return this.count;
+  }
+
+  public void setCount(int newCount) {
+    this.count -= 1;
+  }
+
+  public void resetCount() {
+    this.count = this.players.size();
+  }
+
+  public Integer getCurrentQuestion() { // index
+    return this.curQuestionIdx;
+  }
+
+  public void updateCurrentQuestion() { // index
+    this.curQuestionIdx += 1;
+  }
+
+  public ArrayList<Player> getPlayers() {
+    return this.players;
+  }
+
+  public boolean isEnd() {
+    return this.curQuestionIdx == this.questions.size();
   }
 }
