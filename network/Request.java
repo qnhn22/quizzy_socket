@@ -57,15 +57,19 @@ public class Request implements Runnable {
     Thread.sleep(5000);
 
     while (true) {
+      msg = null;
 
       if (id == 0) {
         Server.sendQuestionToAllPlayers();
-        // sendQuestion(game.getQuestions().get(0).getQuestion());
       }
+
+      System.out.println("hohohoho");
 
       while (msg == null) {
         msg = br.readLine();
+        System.out.println("kekekeke");
         System.out.println("Player " + id + ": " + msg);
+        System.out.println("kakakaka");
       }
       // os.writeBytes(msg + "\n");
 

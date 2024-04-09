@@ -19,7 +19,7 @@ class Client {
     BufferedReader inFromServer = new BufferedReader(new InputStreamReader(
         clientSocket.getInputStream()));
 
-    int questionNo = 1;
+    int questionNo = 0;
 
     while (true) {
       question = inFromServer.readLine();
