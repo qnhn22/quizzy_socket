@@ -48,12 +48,13 @@ public final class Server {
     game = new Game(questions);
     playerConnections = new ArrayList<>();
     int id = 0;
+    scores = new HashMap<>();
 
     while (true) {
       Socket connection = socket.accept();
 
       // Construct an object to process the HTTP request message.
-      Request request = new Request(connection, game, id);
+      Request request = new Request(connection, game, id, scores);
 
       if (connection.isConnected()) {
         playerConnections.add(request);
@@ -71,7 +72,7 @@ public final class Server {
 
   public static synchronized void sendQuestionToAllPlayers() {
     int curIndex = game.getCurrentQuestion(); // the index of current question in the question list
-    System.out.println(playerConnections.size());
+    // System.out.println(playerConnections.size());
     for (Request player : playerConnections) {
       String questionText = game.getQuestions().get(curIndex).getQuestion();
       try {
@@ -80,10 +81,20 @@ public final class Server {
         System.out.println(e.getMessage());
       }
     }
-    if (game.getCurrentQuestion() < game.getQuestions().size()) {
+    if (game.getCurrentQuestion() < game.getQuestions().size() - 1) {
       game.updateCurrentQuestion();
     } else {
       System.out.println("End game.");
+    }
+  }
+
+  public static synchronized void sendScoresToAllPlayers() {
+    for (Request player : playerConnections) {
+      try {
+        player.sendScore();
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+      }
     }
   }
 

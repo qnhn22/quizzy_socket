@@ -8,7 +8,7 @@ class Client {
   public static void main(String argv[]) throws Exception {
 
     String answer;
-    String question;
+    String msg;
 
     BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 
@@ -19,22 +19,26 @@ class Client {
     BufferedReader inFromServer = new BufferedReader(new InputStreamReader(
         clientSocket.getInputStream()));
 
-    int questionNo = 0;
+    int questionNo = 1;
 
     while (true) {
-      question = inFromServer.readLine();
+      msg = inFromServer.readLine();
 
-      if (question.length() != 0) {
-        System.out.println("Question " + questionNo + ": " + question);
+      if (msg.startsWith("q")) {
+        System.out.println("Question " + questionNo + ": " + msg.substring(1));
         System.out.println("Please select your answer (1 to 4):");
         questionNo += 1;
+
+        answer = inFromUser.readLine();
+
+        if (answer.length() != 0) {
+          System.out.println(answer);
+          outToServer.writeBytes(answer + "\n");
+        }
       }
 
-      answer = inFromUser.readLine();
-
-      if (answer.length() != 0) {
-        System.out.println(answer);
-        outToServer.writeBytes(answer + "\n");
+      if (msg.startsWith("s")) {
+        System.out.println(msg.substring(1));
       }
     }
   }

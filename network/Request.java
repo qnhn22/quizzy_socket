@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -63,30 +64,32 @@ public class Request implements Runnable {
     Thread.sleep(5000);
 
     while (true) {
-      msg = null;
 
       if (id == 0) {
         Server.sendQuestionToAllPlayers();
       }
 
-      System.out.println("hohohoho");
+      Thread.sleep(8000);
 
-      while (msg == null) {
-        msg = br.readLine();
-        System.out.println("kekekeke");
-        System.out.println("Player " + id + ": " + msg);
+      msg = br.readLine();
+      System.out.println("Player " + id + ": " + msg);
 
-        // check if the answer is correct
-        if (game.getQuestions().get(game.getCurrentQuestion()).getAnswer() == Integer.parseInt(msg)) {
-          scores.put(id, scores.get(id) + 1);
-        }
-
-        // print out the score for checking
-        System.out.println("Question " + game.getCurrentQuestion() + " Player " + id + " score: " + scores.get(id));
+      // check if the answer is correct
+      if (game.getQuestions().get(game.getCurrentQuestion()).getAnswer() == Integer.parseInt(msg) - 1) {
+        scores.put(id, scores.get(id) + 1);
       }
+
+      // print out the score for checking
+      // System.out.println("Question " + game.getCurrentQuestion() + " Player " + id
+      // + " score: " + scores.get(id));
+      // }
       // os.writeBytes(msg + "\n");
 
-      Thread.sleep(30000);
+      if (id == 0) {
+        Server.sendScoresToAllPlayers();
+      }
+
+      Thread.sleep(1000);
     }
 
     // Close streams and socket.
@@ -96,6 +99,10 @@ public class Request implements Runnable {
   }
 
   public void sendQuestion(String question) throws Exception {
-    os.writeBytes(question + "\n");
+    os.writeBytes("q" + question + "\n");
+  }
+
+  public void sendScore() throws IOException {
+    os.writeBytes("sPlayer " + id + " score: " + scores.get(id) + "\n");
   }
 }
