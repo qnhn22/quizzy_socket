@@ -97,7 +97,22 @@ public final class Server {
       }
     }
   }
+  public static synchronized void checkScoreToAllPlayers(int currentQuestionIndex, HashMap<Integer, Integer> scores) {
+    playerConnections.forEach(request -> {
+        int playerId = request.getId();
 
+        try {
+            int playerAnswer = request.getLastAnswer(); 
+            System.out.println("*** TEST: Player ID:" + playerId + "Q " + currentQuestionIndex + "A " 
+            + game.getQuestions().get(currentQuestionIndex).getAnswer() + "P " + request.getLastAnswer());
+            if (game.getQuestions().get(currentQuestionIndex).getAnswer() == playerAnswer - 1) {
+                scores.put(playerId, scores.get(playerId) + 1);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input from Player:  " + playerId);
+        }
+    });
+}
   public static boolean isEnd() {
     return game.isEnd();
   }

@@ -26,6 +26,7 @@ public class Request implements Runnable {
   private DataOutputStream os;
   private Integer id;
   private HashMap<Integer, Integer> scores;
+  private int lastAnswer = 1;
 
   // Constructor
   public Request(Socket socket, Game game, int id, HashMap<Integer, Integer> scores) throws Exception {
@@ -35,6 +36,7 @@ public class Request implements Runnable {
     os = new DataOutputStream(this.socket.getOutputStream());
     this.id = id;
     this.scores = scores;
+    this.lastAnswer = -1;
   }
 
   // Implement the run() method of the Runnable interface. public void run()
@@ -45,6 +47,15 @@ public class Request implements Runnable {
       System.out.println(e);
     }
   }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public Integer getLastAnswer() {
+    return lastAnswer;
+  }
+
 
   private void processRequest() throws Exception {
     // add player
@@ -73,11 +84,11 @@ public class Request implements Runnable {
 
       msg = br.readLine();
       System.out.println("Player " + id + ": " + msg);
-
-      // check if the answer is correct
-      if (game.getQuestions().get(game.getCurrentQuestion()).getAnswer() == Integer.parseInt(msg) - 1) {
-        scores.put(id, scores.get(id) + 1);
-      }
+      
+      Thread.sleep(3000);
+      lastAnswer = Integer.parseInt(msg);
+      Server.checkScoreToAllPlayers(game.getCurrentQuestion(), scores);
+      Thread.sleep(3000);
 
       // print out the score for checking
       // System.out.println("Question " + game.getCurrentQuestion() + " Player " + id
