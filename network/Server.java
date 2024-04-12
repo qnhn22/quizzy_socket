@@ -103,8 +103,8 @@ public final class Server {
 
         try {
             int playerAnswer = request.getLastAnswer(); 
-            System.out.println("*** TEST: Player ID:" + playerId + "Q " + currentQuestionIndex + "A " 
-            + game.getQuestions().get(currentQuestionIndex).getAnswer() + "P " + request.getLastAnswer());
+            // System.out.println("*** TEST: Player ID:" + playerId + "Q " + currentQuestionIndex + "A " 
+            // + game.getQuestions().get(currentQuestionIndex).getAnswer() + "P " + request.getLastAnswer());
             if (game.getQuestions().get(currentQuestionIndex).getAnswer() == playerAnswer - 1) {
                 scores.put(playerId, scores.get(playerId) + 1);
             }

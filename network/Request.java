@@ -84,11 +84,23 @@ public class Request implements Runnable {
 
       msg = br.readLine();
       System.out.println("Player " + id + ": " + msg);
+
+      System.out.println("*** Before check score, Question:" + game.getCurrentQuestion());
+
+      Thread.sleep(3000);
+      // lastAnswer = Integer.parseInt(msg);
+      // Server.checkScoreToAllPlayers(game.getCurrentQuestion(), scores);
       
+      if (game.getQuestions().get(game.getCurrentQuestion()).getAnswer() == Integer.parseInt(msg) - 1) {
+        scores.put(id, scores.get(id) + 1);
+      }
       Thread.sleep(3000);
       lastAnswer = Integer.parseInt(msg);
-      Server.checkScoreToAllPlayers(game.getCurrentQuestion(), scores);
-      Thread.sleep(3000);
+
+      System.out.println("*** After check score");
+      System.out.println("Question " + game.getCurrentQuestion() + " answer: " + game.getQuestions().get(game.getCurrentQuestion()).getAnswer());
+      System.out.println("Player " + id + " anwser: " + lastAnswer + " score: " + scores.get(id));
+
 
       // print out the score for checking
       // System.out.println("Question " + game.getCurrentQuestion() + " Player " + id
