@@ -56,7 +56,6 @@ public class Request implements Runnable {
     return lastAnswer;
   }
 
-
   private void processRequest() throws Exception {
     // add player
     scores.put(id, 0);
@@ -72,7 +71,7 @@ public class Request implements Runnable {
 
     // os.writeBytes("Welcome!!!\n");
 
-    Thread.sleep(5000);
+    Thread.sleep(3000);
 
     while (true) {
 
@@ -80,39 +79,43 @@ public class Request implements Runnable {
         Server.sendQuestionToAllPlayers();
       }
 
-      Thread.sleep(8000);
+      Thread.sleep(10000);
 
       msg = br.readLine();
+
       System.out.println("Player " + id + ": " + msg);
+      // System.out.println(Integer.parseInt(msg));
+      System.out.println(game.getCurrentQuestion());
+      System.out.println(game.getCurAnswer());
+      System.out.println(game.getCurAnswer() == Integer.parseInt(msg) - 1);
 
-      System.out.println("*** Before check score, Question:" + game.getCurrentQuestion());
+      // System.out.println("*** Before check score, Question:" +
+      // game.getCurrentQuestion());
 
-      Thread.sleep(3000);
+      // Thread.sleep(3000);
       // lastAnswer = Integer.parseInt(msg);
       // Server.checkScoreToAllPlayers(game.getCurrentQuestion(), scores);
-      
-      if (game.getQuestions().get(game.getCurrentQuestion()).getAnswer() == Integer.parseInt(msg) - 1) {
-        scores.put(id, scores.get(id) + 1);
+
+      if (game.getCurAnswer() == Integer.parseInt(msg) - 1) {
+        // scores.put(id, scores.get(id) + 1);
+        Server.updateScore(id);
       }
-      Thread.sleep(3000);
-      lastAnswer = Integer.parseInt(msg);
+      Thread.sleep(2000);
+      // lastAnswer = Integer.parseInt(msg);
 
-      System.out.println("*** After check score");
-      System.out.println("Question " + game.getCurrentQuestion() + " answer: " + game.getQuestions().get(game.getCurrentQuestion()).getAnswer());
-      System.out.println("Player " + id + " anwser: " + lastAnswer + " score: " + scores.get(id));
+      // System.out.println("*** After check score");
+      // System.out.println("Question " + game.getCurrentQuestion() + " answer: "
+      // + game.getQuestions().get(game.getCurrentQuestion()).getAnswer());
+      // System.out.println("Player " + id + " anwser: " + lastAnswer + " score: " +
+      // scores.get(id));
 
+      sendScore();
 
-      // print out the score for checking
-      // System.out.println("Question " + game.getCurrentQuestion() + " Player " + id
-      // + " score: " + scores.get(id));
-      // }
-      // os.writeBytes(msg + "\n");
+      Thread.sleep(5000);
 
       if (id == 0) {
-        Server.sendScoresToAllPlayers();
+        Server.updateCurrentQuestion();
       }
-
-      Thread.sleep(1000);
     }
 
     // Close streams and socket.

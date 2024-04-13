@@ -33,7 +33,7 @@ public final class Server {
     optionsQ2.add("Stephen King");
     optionsQ2.add("Harper Lee");
     optionsQ2.add("George Orwell");
-    Question q2 = new Question("Who wrote 'To Kill a Mockingbird'?", optionsQ1, 2);
+    Question q2 = new Question("Who wrote 'To Kill a Mockingbird'?", optionsQ2, 1);
     ArrayList<String> optionsQ3 = new ArrayList<>();
     optionsQ3.add("Paris");
     optionsQ3.add("London");
@@ -50,6 +50,10 @@ public final class Server {
     int id = 0;
     scores = new HashMap<>();
 
+    long startTime = System.currentTimeMillis();
+    long duration = 5000; // 5 seconds in milliseconds
+
+    // while (System.currentTimeMillis() - startTime < duration) {
     while (true) {
       Socket connection = socket.accept();
 
@@ -58,15 +62,22 @@ public final class Server {
 
       if (connection.isConnected()) {
         playerConnections.add(request);
-
-        // Create a new thread to process the request.
-        Thread thread = new Thread(request);
-
-        // Start the thread.
-        thread.start();
-
         id += 1;
       }
+
+      // Server.startGame();
+
+      Thread thread = new Thread(request);
+      // Start the thread.
+      thread.start();
+    }
+  }
+
+  public static synchronized void startGame() {
+    for (Request player : playerConnections) {
+      // Create a new thread to process the request.
+      Thread thread = new Thread(player);
+      thread.start();
     }
   }
 
@@ -81,38 +92,41 @@ public final class Server {
         System.out.println(e.getMessage());
       }
     }
-    if (game.getCurrentQuestion() < game.getQuestions().size() - 1) {
-      game.updateCurrentQuestion();
-    } else {
-      System.out.println("End game.");
-    }
+    // if (game.getCurrentQuestion() < game.getQuestions().size() - 1) {
+    // game.updateCurrentQuestion();
+    // } else {
+    // System.out.println("End game.");
+    // }
   }
 
-  public static synchronized void sendScoresToAllPlayers() {
-    for (Request player : playerConnections) {
-      try {
-        player.sendScore();
-      } catch (Exception e) {
-        System.out.println(e.getMessage());
-      }
-    }
+  public static synchronized void updateCurrentQuestion() {
+    game.updateCurrentQuestion();
   }
+
+  public static synchronized void updateScore(int id) {
+    int curScore = scores.get(id);
+    scores.put(id, curScore + 1);
+  }
+
   public static synchronized void checkScoreToAllPlayers(int currentQuestionIndex, HashMap<Integer, Integer> scores) {
     playerConnections.forEach(request -> {
-        int playerId = request.getId();
+      int playerId = request.getId();
 
-        try {
-            int playerAnswer = request.getLastAnswer(); 
-            // System.out.println("*** TEST: Player ID:" + playerId + "Q " + currentQuestionIndex + "A " 
-            // + game.getQuestions().get(currentQuestionIndex).getAnswer() + "P " + request.getLastAnswer());
-            if (game.getQuestions().get(currentQuestionIndex).getAnswer() == playerAnswer - 1) {
-                scores.put(playerId, scores.get(playerId) + 1);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input from Player:  " + playerId);
+      try {
+        int playerAnswer = request.getLastAnswer();
+        // System.out.println("*** TEST: Player ID:" + playerId + "Q " +
+        // currentQuestionIndex + "A "
+        // + game.getQuestions().get(currentQuestionIndex).getAnswer() + "P " +
+        // request.getLastAnswer());
+        if (game.getQuestions().get(currentQuestionIndex).getAnswer() == playerAnswer - 1) {
+          scores.put(playerId, scores.get(playerId) + 1);
         }
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid input from Player:  " + playerId);
+      }
     });
-}
+  }
+
   public static boolean isEnd() {
     return game.isEnd();
   }
