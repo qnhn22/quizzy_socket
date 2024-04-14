@@ -69,7 +69,7 @@ public class Request implements Runnable {
 
     String msg = null;
 
-    // os.writeBytes("Welcome!!!\n");
+    os.writeBytes("wWelcome!!!\n");
 
     Thread.sleep(3000);
 

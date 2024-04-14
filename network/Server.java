@@ -53,8 +53,8 @@ public final class Server {
     long startTime = System.currentTimeMillis();
     long duration = 5000; // 5 seconds in milliseconds
 
-    // while (System.currentTimeMillis() - startTime < duration) {
-    while (true) {
+    while (System.currentTimeMillis() - startTime < duration) {
+      // while (true) {
       Socket connection = socket.accept();
 
       // Construct an object to process the HTTP request message.
@@ -65,12 +65,12 @@ public final class Server {
         id += 1;
       }
 
-      // Server.startGame();
-
-      Thread thread = new Thread(request);
-      // Start the thread.
-      thread.start();
+      // Thread thread = new Thread(request);
+      // // Start the thread.
+      // thread.start();
     }
+
+    Server.startGame();
   }
 
   public static synchronized void startGame() {

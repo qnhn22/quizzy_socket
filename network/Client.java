@@ -24,7 +24,9 @@ class Client {
     while (true) {
       msg = inFromServer.readLine();
 
-      if (msg.startsWith("q")) {
+      if (msg.startsWith("w")) {
+        System.out.println(msg.substring(1));
+      } else if (msg.startsWith("q")) {
         System.out.println("Question " + questionNo + ": " + msg.substring(1));
         System.out.println("Please select your answer (1 to 4):");
         questionNo += 1;
@@ -35,9 +37,7 @@ class Client {
           System.out.println(answer);
           outToServer.writeBytes(answer + "\n");
         }
-      }
-
-      if (msg.startsWith("s")) {
+      } else if (msg.startsWith("s")) {
         System.out.println(msg.substring(1));
       }
     }
