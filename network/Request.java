@@ -26,7 +26,6 @@ public class Request implements Runnable {
   private DataOutputStream os;
   private Integer id;
   private HashMap<Integer, Integer> scores;
-  private int lastAnswer = 1;
 
   // Constructor
   public Request(Socket socket, Game game, int id, HashMap<Integer, Integer> scores) throws Exception {
@@ -36,7 +35,6 @@ public class Request implements Runnable {
     os = new DataOutputStream(this.socket.getOutputStream());
     this.id = id;
     this.scores = scores;
-    this.lastAnswer = -1;
   }
 
   // Implement the run() method of the Runnable interface. public void run()
@@ -46,14 +44,6 @@ public class Request implements Runnable {
     } catch (Exception e) {
       System.out.println(e);
     }
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public Integer getLastAnswer() {
-    return lastAnswer;
   }
 
   private void processRequest() throws Exception {
@@ -89,25 +79,10 @@ public class Request implements Runnable {
       System.out.println(game.getCurAnswer());
       System.out.println(game.getCurAnswer() == Integer.parseInt(msg) - 1);
 
-      // System.out.println("*** Before check score, Question:" +
-      // game.getCurrentQuestion());
-
-      // Thread.sleep(3000);
-      // lastAnswer = Integer.parseInt(msg);
-      // Server.checkScoreToAllPlayers(game.getCurrentQuestion(), scores);
-
       if (game.getCurAnswer() == Integer.parseInt(msg) - 1) {
-        // scores.put(id, scores.get(id) + 1);
         Server.updateScore(id);
       }
       Thread.sleep(2000);
-      // lastAnswer = Integer.parseInt(msg);
-
-      // System.out.println("*** After check score");
-      // System.out.println("Question " + game.getCurrentQuestion() + " answer: "
-      // + game.getQuestions().get(game.getCurrentQuestion()).getAnswer());
-      // System.out.println("Player " + id + " anwser: " + lastAnswer + " score: " +
-      // scores.get(id));
 
       sendScore();
 
@@ -124,8 +99,17 @@ public class Request implements Runnable {
     // socket.close();
   }
 
-  public void sendQuestion(String question) throws Exception {
-    os.writeBytes("q" + question + "\n");
+  public void sendQuestion(Question question) throws Exception {
+    String questionText = question.getQuestion();
+    String questionToPlayers = "q" + questionText + ";";
+
+    for (int i = 1; i <= 4; i++) {
+      System.out.println(question.getAllOpt().get(i - 1));
+      System.out.println(questionToPlayers);
+      questionToPlayers += i + ". " + question.getAllOpt().get(i - 1) + ";";
+    }
+
+    os.writeBytes(questionToPlayers + "\n");
   }
 
   public void sendScore() throws IOException {

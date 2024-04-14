@@ -51,10 +51,9 @@ public final class Server {
     scores = new HashMap<>();
 
     long startTime = System.currentTimeMillis();
-    long duration = 5000; // 5 seconds in milliseconds
+    long duration = 5000; // 5 seconds
 
     while (System.currentTimeMillis() - startTime < duration) {
-      // while (true) {
       Socket connection = socket.accept();
 
       // Construct an object to process the HTTP request message.
@@ -64,10 +63,6 @@ public final class Server {
         playerConnections.add(request);
         id += 1;
       }
-
-      // Thread thread = new Thread(request);
-      // // Start the thread.
-      // thread.start();
     }
 
     Server.startGame();
@@ -85,9 +80,9 @@ public final class Server {
     int curIndex = game.getCurrentQuestion(); // the index of current question in the question list
     // System.out.println(playerConnections.size());
     for (Request player : playerConnections) {
-      String questionText = game.getQuestions().get(curIndex).getQuestion();
+      Question question = game.getQuestions().get(curIndex);
       try {
-        player.sendQuestion(questionText);
+        player.sendQuestion(question);
       } catch (Exception e) {
         System.out.println(e.getMessage());
       }
@@ -106,25 +101,6 @@ public final class Server {
   public static synchronized void updateScore(int id) {
     int curScore = scores.get(id);
     scores.put(id, curScore + 1);
-  }
-
-  public static synchronized void checkScoreToAllPlayers(int currentQuestionIndex, HashMap<Integer, Integer> scores) {
-    playerConnections.forEach(request -> {
-      int playerId = request.getId();
-
-      try {
-        int playerAnswer = request.getLastAnswer();
-        // System.out.println("*** TEST: Player ID:" + playerId + "Q " +
-        // currentQuestionIndex + "A "
-        // + game.getQuestions().get(currentQuestionIndex).getAnswer() + "P " +
-        // request.getLastAnswer());
-        if (game.getQuestions().get(currentQuestionIndex).getAnswer() == playerAnswer - 1) {
-          scores.put(playerId, scores.get(playerId) + 1);
-        }
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid input from Player:  " + playerId);
-      }
-    });
   }
 
   public static boolean isEnd() {
