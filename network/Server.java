@@ -51,7 +51,7 @@ public final class Server {
     scores = new HashMap<>();
 
     long startTime = System.currentTimeMillis();
-    long duration = 5000; // 5 seconds
+    long duration = 10000; // 5 seconds
 
     while (System.currentTimeMillis() - startTime < duration) {
       Socket connection = socket.accept();
