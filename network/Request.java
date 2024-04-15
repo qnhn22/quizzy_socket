@@ -69,7 +69,7 @@ public class Request implements Runnable {
 
     String msg = null;
 
-    os.writeBytes("wWelcome!!!\n");
+    os.writeBytes("Welcome!!!\n");
 
     Thread.sleep(3000);
 
@@ -110,18 +110,24 @@ public class Request implements Runnable {
       // scores.get(id));
 
       sendScore();
-
+      
+      if (game.getQuestions().size() - 1 == game.getCurrentQuestion()) {
+        System.out.println("*** TEST" + game.getQuestions().size() + game.getCurrentQuestion());
+        os.writeBytes("End Game!!!\n");
+        os.close();
+        br.close();
+        socket.close();
+      }
+      
       Thread.sleep(5000);
-
+      
       if (id == 0) {
         Server.updateCurrentQuestion();
       }
+      
     }
-
+    
     // Close streams and socket.
-    // os.close();
-    // br.close();
-    // socket.close();
   }
 
   public void sendQuestion(String question) throws Exception {
