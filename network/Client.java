@@ -23,27 +23,31 @@ class Client {
 
     while (true) {
       msg = inFromServer.readLine();
-      System.out.println(msg);
+      // System.out.println(msg);
+
+      if (msg == null) {
+        continue;
+      }
 
       if (msg.startsWith("w")) {
         System.out.println(msg.substring(1));
       } else if (msg.startsWith("q")) {
         String[] questionAndOptions = msg.substring(1).split(";");
         String question = questionAndOptions[0];
+        System.out.println();
         System.out.println("Question " + questionNo + ": " + question);
         for (int i = 1; i <= 4; i++) {
           System.out.println(questionAndOptions[i]);
         }
-        System.out.println("Please select your answer (1 to 4):");
+        System.out.print("Please select your answer (1 to 4): ");
         questionNo += 1;
 
         answer = inFromUser.readLine();
 
         if (answer.length() != 0) {
-          System.out.println(answer);
           outToServer.writeBytes(answer + "\n");
         }
-      } else if (msg.startsWith("s") || msg.startsWith("o")) {
+      } else if (msg.startsWith("s") || msg.startsWith("o") || msg.startsWith("e")) {
         System.out.println(msg.substring(1));
       }
     }

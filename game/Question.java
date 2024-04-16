@@ -25,14 +25,6 @@ public class Question {
     return this.options;
   }
 
-  public String getOpt(int index) {
-    return this.options.get(index);
-  }
-
-  public void setOpt(int index, String newOpt) {
-    this.options.set(index, newOpt);
-  }
-
   public int getAnswer() {
     return this.answer;
   }

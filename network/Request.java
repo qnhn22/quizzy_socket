@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import game.Game;
-import game.Player;
 import game.Question;
 
 /**
@@ -50,34 +49,28 @@ public class Request implements Runnable {
     // add player
     scores.put(id, 0);
 
-    // Get a reference to the socket's input and output streams.
-    InputStream is = socket.getInputStream();
-    DataOutputStream os = new DataOutputStream(socket.getOutputStream());
-
     // Set up input stream filters.
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
     String msg = null;
 
     os.writeBytes("wWelcome!!!\n");
+    os.writeBytes("wYou are player " + id);
+    os.writeBytes("\n");
 
     Thread.sleep(3000);
 
     while (true) {
 
-      if (id == 0) {
+      if (id == 1) {
+        System.out.println("nonononono");
         Server.sendQuestionToAllPlayers();
       }
 
       Thread.sleep(10000);
 
+      // read answer from a player
       msg = br.readLine();
-
-      System.out.println("Player " + id + ": " + msg);
-      // System.out.println(Integer.parseInt(msg));
-      System.out.println(game.getCurrentQuestion());
-      System.out.println(game.getCurAnswer());
-      System.out.println(game.getCurAnswer() == Integer.parseInt(msg) - 1);
 
       if (game.getCurAnswer() == Integer.parseInt(msg) - 1) {
         Server.updateScore(id);
@@ -86,23 +79,22 @@ public class Request implements Runnable {
 
       sendScore();
 
+      System.out.println("kakakaka");
+
+      Thread.sleep(5000);
+
       if (game.getQuestions().size() - 1 == game.getCurrentQuestion()) {
-        System.out.println("*** TEST" + game.getQuestions().size() + game.getCurrentQuestion());
-        os.writeBytes("End Game!!!\n");
+        System.out.println("End game!");
+        os.writeBytes("eEnd Game!!!\n");
         os.close();
         br.close();
         socket.close();
       }
 
-      Thread.sleep(5000);
-
-      if (id == 0) {
+      if (id == 1 && game.getCurrentQuestion() < game.getQuestions().size() - 1) {
         Server.updateCurrentQuestion();
       }
-
     }
-
-    // Close streams and socket.
   }
 
   public void sendQuestion(Question question) throws Exception {
@@ -110,8 +102,6 @@ public class Request implements Runnable {
     String questionToPlayers = "q" + questionText + ";";
 
     for (int i = 1; i <= 4; i++) {
-      System.out.println(question.getAllOpt().get(i - 1));
-      System.out.println(questionToPlayers);
       questionToPlayers += i + ". " + question.getAllOpt().get(i - 1) + ";";
     }
 
@@ -119,6 +109,6 @@ public class Request implements Runnable {
   }
 
   public void sendScore() throws IOException {
-    os.writeBytes("sPlayer " + id + " score: " + scores.get(id) + "\n");
+    os.writeBytes("sYour current score is " + scores.get(id) + "\n");
   }
 }

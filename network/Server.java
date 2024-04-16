@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import game.Game;
-import game.Player;
 import game.Question;
 import network.Request;
 
@@ -43,23 +42,24 @@ public final class Server {
     ArrayList<Question> questions = new ArrayList<>();
     questions.add(q1);
     questions.add(q2);
-    questions.add(q3);
+    // questions.add(q3);
 
     game = new Game(questions);
     playerConnections = new ArrayList<>();
-    int id = 0;
+    int id = 1;
     scores = new HashMap<>();
 
     long startTime = System.currentTimeMillis();
-    long duration = 10000; // 5 seconds
+    long duration = 5000; // 5 seconds
 
-    while (System.currentTimeMillis() - startTime < duration) {
+    while (System.currentTimeMillis() - startTime <= duration) {
       Socket connection = socket.accept();
 
       // Construct an object to process the HTTP request message.
       Request request = new Request(connection, game, id, scores);
 
       if (connection.isConnected()) {
+        System.out.println("kekekekek");
         playerConnections.add(request);
         id += 1;
       }
@@ -69,6 +69,7 @@ public final class Server {
   }
 
   public static synchronized void startGame() {
+    System.out.println("hohohoho");
     for (Request player : playerConnections) {
       // Create a new thread to process the request.
       Thread thread = new Thread(player);
@@ -78,20 +79,17 @@ public final class Server {
 
   public static synchronized void sendQuestionToAllPlayers() {
     int curIndex = game.getCurrentQuestion(); // the index of current question in the question list
-    // System.out.println(playerConnections.size());
-    for (Request player : playerConnections) {
-      Question question = game.getQuestions().get(curIndex);
-      try {
-        player.sendQuestion(question);
-      } catch (Exception e) {
-        System.out.println(e.getMessage());
+
+    if (curIndex >= 0 && curIndex < game.getQuestions().size()) {
+      for (Request player : playerConnections) {
+        Question question = game.getQuestions().get(curIndex);
+        try {
+          player.sendQuestion(question);
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
       }
     }
-    // if (game.getCurrentQuestion() < game.getQuestions().size() - 1) {
-    // game.updateCurrentQuestion();
-    // } else {
-    // System.out.println("End game.");
-    // }
   }
 
   public static synchronized void updateCurrentQuestion() {
@@ -106,5 +104,4 @@ public final class Server {
   public static boolean isEnd() {
     return game.isEnd();
   }
-
 }
