@@ -102,8 +102,4 @@ public final class Server {
       scores.put(id, curScore);
     }
   }
-
-  public static boolean isEnd() {
-    return game.isEnd();
-  }
 }

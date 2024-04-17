@@ -38,8 +38,4 @@ public class Game {
     Question curQ = this.questions.get(this.curQuestionIdx);
     setCurAnswer(curQ.getAnswer());
   }
-
-  public boolean isEnd() {
-    return this.curQuestionIdx == this.questions.size();
-  }
 }
