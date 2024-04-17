@@ -63,7 +63,6 @@ public class Request implements Runnable {
     while (true) {
 
       if (id == 1) {
-        System.out.println("nonononono");
         Server.sendQuestionToAllPlayers();
       }
 
@@ -73,13 +72,11 @@ public class Request implements Runnable {
       msg = br.readLine();
 
       if (game.getCurAnswer() == Integer.parseInt(msg) - 1) {
-        Server.updateScore(id);
+        Server.updateScore(id, true);
       }
       Thread.sleep(2000);
 
       sendScore();
-
-      System.out.println("kakakaka");
 
       Thread.sleep(5000);
 
@@ -109,6 +106,7 @@ public class Request implements Runnable {
   }
 
   public void sendScore() throws IOException {
-    os.writeBytes("sYour current score is " + scores.get(id) + "\n");
+    String msg = "sCorrect answer is " + (game.getCurAnswer() + 1) + " - " + game.getCurAnsText();
+    os.writeBytes(msg + ";" + "Your current score is " + scores.get(id) + "\n");
   }
 }

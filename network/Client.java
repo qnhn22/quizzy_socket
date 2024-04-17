@@ -25,10 +25,6 @@ class Client {
       msg = inFromServer.readLine();
       // System.out.println(msg);
 
-      if (msg == null) {
-        continue;
-      }
-
       if (msg.startsWith("w")) {
         System.out.println(msg.substring(1));
       } else if (msg.startsWith("q")) {
@@ -47,8 +43,12 @@ class Client {
         if (answer.length() != 0) {
           outToServer.writeBytes(answer + "\n");
         }
-      } else if (msg.startsWith("s") || msg.startsWith("o") || msg.startsWith("e")) {
+      } else if (msg.startsWith("o") || msg.startsWith("e")) {
         System.out.println(msg.substring(1));
+      } else if (msg.startsWith("s")) {
+        String[] result = msg.split(";");
+        System.out.println(result[0].substring(1));
+        System.out.println(result[1]);
       }
     }
   }

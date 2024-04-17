@@ -42,7 +42,7 @@ public final class Server {
     ArrayList<Question> questions = new ArrayList<>();
     questions.add(q1);
     questions.add(q2);
-    // questions.add(q3);
+    questions.add(q3);
 
     game = new Game(questions);
     playerConnections = new ArrayList<>();
@@ -59,7 +59,6 @@ public final class Server {
       Request request = new Request(connection, game, id, scores);
 
       if (connection.isConnected()) {
-        System.out.println("kekekekek");
         playerConnections.add(request);
         id += 1;
       }
@@ -69,7 +68,6 @@ public final class Server {
   }
 
   public static synchronized void startGame() {
-    System.out.println("hohohoho");
     for (Request player : playerConnections) {
       // Create a new thread to process the request.
       Thread thread = new Thread(player);
@@ -96,9 +94,13 @@ public final class Server {
     game.updateCurrentQuestion();
   }
 
-  public static synchronized void updateScore(int id) {
+  public static synchronized void updateScore(int id, boolean isCorrect) {
     int curScore = scores.get(id);
-    scores.put(id, curScore + 1);
+    if (isCorrect == true) {
+      scores.put(id, curScore + 1);
+    } else {
+      scores.put(id, curScore);
+    }
   }
 
   public static boolean isEnd() {

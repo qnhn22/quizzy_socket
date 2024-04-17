@@ -25,6 +25,10 @@ public class Game {
     return this.curAnswer;
   }
 
+  public String getCurAnsText() {
+    return this.questions.get(this.curAnswer).getAnsText();
+  }
+
   public void setCurAnswer(int newAns) {
     this.curAnswer = newAns;
   }
