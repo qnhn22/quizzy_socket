@@ -102,4 +102,8 @@ public final class Server {
       scores.put(id, curScore);
     }
   }
+
+  // public static synchronized void sendGameResult() {
+
+  // }
 }

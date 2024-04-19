@@ -21,8 +21,9 @@ class Client {
 
     int questionNo = 1;
 
-    while (true) {
-      msg = inFromServer.readLine();
+    msg = inFromServer.readLine();
+
+    while (msg != null) {
       // System.out.println(msg);
 
       if (msg.startsWith("w")) {
@@ -50,6 +51,8 @@ class Client {
         System.out.println(result[0].substring(1));
         System.out.println(result[1]);
       }
+
+      msg = inFromServer.readLine();
     }
   }
 }
