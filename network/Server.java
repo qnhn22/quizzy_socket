@@ -3,7 +3,6 @@ package network;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 import game.Game;
 import game.Question;
 import network.Request;
@@ -14,7 +13,6 @@ import network.Request;
 public final class Server {
   private static Game game;
   private static ArrayList<Request> playerConnections;
-  private static CountDownLatch latch;
   private static HashMap<Integer, Integer> scores;
 
   public static void main(String argv[]) throws Exception {
@@ -60,6 +58,7 @@ public final class Server {
 
       if (connection.isConnected()) {
         playerConnections.add(request);
+        game.updateNoPlayers();
         id += 1;
       }
     }
@@ -103,7 +102,25 @@ public final class Server {
     }
   }
 
-  // public static synchronized void sendGameResult() {
+  public static synchronized void sortAndSendGameResult() {
+    System.out.println(game.getNoPlayers());
+    ArrayList<int[]> result = new ArrayList<>();
+    for (int i = 1; i <= game.getNoPlayers(); i++) {
+      result.add(new int[] { scores.get(i), i });
+    }
 
-  // }
+    String resultToClient = "";
+    Collections.sort(result, Comparator.comparingInt(a -> a[0]));
+    for (int[] playerScore : result) {
+      resultToClient += "Player " + playerScore[1] + ": " + playerScore[0] + ";";
+    }
+
+    for (Request player : playerConnections) {
+      try {
+        player.sendResult(resultToClient);
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+      }
+    }
+  }
 }

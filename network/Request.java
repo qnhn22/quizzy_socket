@@ -78,9 +78,13 @@ public class Request implements Runnable {
 
       sendScore();
 
-      Thread.sleep(5000);
+      Thread.sleep(3000);
 
       if (game.getQuestions().size() - 1 == game.getCurrentQuestion()) {
+        if (id == 1) {
+          Server.sortAndSendGameResult();
+        }
+        Thread.sleep(3000);
         System.out.println("End game!");
         os.writeBytes("eEnd Game!!!\n");
         os.close();
@@ -108,5 +112,9 @@ public class Request implements Runnable {
   public void sendScore() throws IOException {
     String msg = "sCorrect answer is " + (game.getCurAnswer() + 1) + " - " + game.getCurAnsText();
     os.writeBytes(msg + ";" + "Your current score is " + scores.get(id) + "\n");
+  }
+
+  public void sendResult(String result) throws IOException {
+    os.writeBytes(result);
   }
 }
