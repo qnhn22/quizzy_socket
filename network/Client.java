@@ -24,7 +24,6 @@ class Client {
     msg = inFromServer.readLine();
 
     while (msg != null) {
-      // System.out.println(msg);
 
       if (msg.startsWith("w")) {
         System.out.println(msg.substring(1));
@@ -44,12 +43,21 @@ class Client {
         if (answer.length() != 0) {
           outToServer.writeBytes(answer + "\n");
         }
-      } else if (msg.startsWith("o") || msg.startsWith("e")) {
+      } else if (msg.startsWith("o")) {
         System.out.println(msg.substring(1));
       } else if (msg.startsWith("s")) {
         String[] result = msg.split(";");
         System.out.println(result[0].substring(1));
         System.out.println(result[1]);
+      } else if (msg.startsWith("r")) {
+        String[] result = msg.substring(1).split(";");
+        System.out.println();
+        System.out.println("Game Over! Here are the results:");
+        System.out.println("---------------------------------");
+        for (String score : result) {
+          System.out.println(score);
+        }
+        System.out.println("---------------------------------");
       }
 
       msg = inFromServer.readLine();

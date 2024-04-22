@@ -86,7 +86,6 @@ public class Request implements Runnable {
         }
         Thread.sleep(3000);
         System.out.println("End game!");
-        os.writeBytes("eEnd Game!!!\n");
         os.close();
         br.close();
         socket.close();

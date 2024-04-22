@@ -109,11 +109,12 @@ public final class Server {
       result.add(new int[] { scores.get(i), i });
     }
 
-    String resultToClient = "";
-    Collections.sort(result, Comparator.comparingInt(a -> a[0]));
+    String resultToClient = "r";
+    Collections.sort(result, Comparator.comparingInt(a -> -a[0]));
     for (int[] playerScore : result) {
       resultToClient += "Player " + playerScore[1] + ": " + playerScore[0] + ";";
     }
+    resultToClient += "\n";
 
     for (Request player : playerConnections) {
       try {
