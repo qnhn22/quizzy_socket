@@ -21,9 +21,8 @@ class Client {
 
     int questionNo = 1;
 
-    msg = inFromServer.readLine();
-
-    while (msg != null) {
+    while (true) {
+      msg = inFromServer.readLine();
 
       if (msg.startsWith("w")) {
         System.out.println(msg.substring(1));
@@ -58,9 +57,8 @@ class Client {
           System.out.println(score);
         }
         System.out.println("---------------------------------");
+        break;
       }
-
-      msg = inFromServer.readLine();
     }
   }
 }

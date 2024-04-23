@@ -86,15 +86,17 @@ public class Request implements Runnable {
         }
         Thread.sleep(3000);
         System.out.println("End game!");
-        os.close();
-        br.close();
-        socket.close();
+        break;
       }
 
       if (id == 1 && game.getCurrentQuestion() < game.getQuestions().size() - 1) {
         Server.updateCurrentQuestion();
       }
     }
+
+    os.close();
+    br.close();
+    socket.close();
   }
 
   public void sendQuestion(Question question) throws Exception {
@@ -109,6 +111,8 @@ public class Request implements Runnable {
   }
 
   public void sendScore() throws IOException {
+    System.out.println(game.getCurrentQuestion());
+    System.out.println(game.getCurAnsText());
     String msg = "sCorrect answer is " + (game.getCurAnswer() + 1) + " - " + game.getCurAnsText();
     os.writeBytes(msg + ";" + "Your current score is " + scores.get(id) + "\n");
   }

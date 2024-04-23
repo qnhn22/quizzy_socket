@@ -29,11 +29,11 @@ public class Question {
     return this.answer;
   }
 
-  public String getAnsText() {
-    return this.options.get(this.answer);
-  }
-
   public void setAnswer(int newAns) {
     this.answer = newAns;
+  }
+
+  public String getAnswerText() {
+    return options.get(answer);
   }
 }
