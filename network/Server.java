@@ -29,7 +29,7 @@ public final class Server {
     while (noQuestions > 0) {
       String rawQuestion = rawQuestions.get(i);
       System.out.println(rawQuestion);
-      if (rawQuestion.length() > 0) {
+      if (rawQuestion != null && rawQuestion.length() > 0) {
         Question question = Server.createQuestion(rawQuestions.get(i));
         questions.add(question);
         noQuestions -= 1;
@@ -45,6 +45,7 @@ public final class Server {
     long startTime = System.currentTimeMillis();
     long duration = 5000; // 5 seconds
 
+    // accept any player connection in 5 seconds
     while (System.currentTimeMillis() - startTime <= duration) {
       Socket connection = socket.accept();
 
@@ -121,7 +122,6 @@ public final class Server {
 
   public static Question createQuestion(String text) {
     String[] arr = text.split(";");
-    System.out.println(text);
     String question = arr[0];
     int answer = Integer.parseInt(arr[5]);
     String[] options = Arrays.copyOfRange(arr, 1, 5);
