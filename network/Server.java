@@ -24,9 +24,17 @@ public final class Server {
     ArrayList<String> rawQuestions = Server.readQuestion();
     Collections.shuffle(rawQuestions);
     // get 5 random questions for the game
-    for (int i = 0; i < 5; i++) {
-      Question question = Server.createQuestion(rawQuestions.get(i));
-      questions.add(question);
+    int noQuestions = 5;
+    int i = 0;
+    while (noQuestions > 0) {
+      String rawQuestion = rawQuestions.get(i);
+      System.out.println(rawQuestion);
+      if (rawQuestion.length() > 0) {
+        Question question = Server.createQuestion(rawQuestions.get(i));
+        questions.add(question);
+        noQuestions -= 1;
+      }
+      i += 1;
     }
 
     game = new Game(questions);
@@ -113,6 +121,7 @@ public final class Server {
 
   public static Question createQuestion(String text) {
     String[] arr = text.split(";");
+    System.out.println(text);
     String question = arr[0];
     int answer = Integer.parseInt(arr[5]);
     String[] options = Arrays.copyOfRange(arr, 1, 5);
@@ -124,7 +133,7 @@ public final class Server {
     ArrayList<String> questions = new ArrayList<>();
     String filePath = "questions.txt";
     BufferedReader reader = new BufferedReader(new FileReader(filePath));
-    String line;
+    String line = reader.readLine();
     while ((line = reader.readLine()) != null) {
       questions.add(line);
     }

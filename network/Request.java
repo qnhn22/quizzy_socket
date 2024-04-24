@@ -81,7 +81,8 @@ public class Request implements Runnable {
       Thread.sleep(3000);
 
       if (game.getQuestions().size() - 1 == game.getCurrentQuestion()) {
-        if (id == 1) {
+        if (id == game.getNoPlayers()) {
+          Thread.sleep(2000);
           Server.sortAndSendGameResult();
         }
         Thread.sleep(3000);
