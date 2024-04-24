@@ -103,7 +103,6 @@ public final class Server {
   }
 
   public static synchronized void sortAndSendGameResult() {
-    System.out.println(game.getNoPlayers());
     ArrayList<int[]> result = new ArrayList<>();
     for (int i = 1; i <= game.getNoPlayers(); i++) {
       result.add(new int[] { scores.get(i), i });

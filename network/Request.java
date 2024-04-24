@@ -66,7 +66,7 @@ public class Request implements Runnable {
         Server.sendQuestionToAllPlayers();
       }
 
-      Thread.sleep(10000);
+      Thread.sleep(31000);
 
       // read answer from a player
       msg = br.readLine();
@@ -111,8 +111,6 @@ public class Request implements Runnable {
   }
 
   public void sendScore() throws IOException {
-    System.out.println(game.getCurrentQuestion());
-    System.out.println(game.getCurAnsText());
     String msg = "sCorrect answer is " + (game.getCurAnswer() + 1) + " - " + game.getCurAnsText();
     os.writeBytes(msg + ";" + "Your current score is " + scores.get(id) + "\n");
   }

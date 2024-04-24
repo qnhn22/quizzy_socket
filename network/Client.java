@@ -34,6 +34,7 @@ class Client {
         for (int i = 1; i <= 4; i++) {
           System.out.println(questionAndOptions[i]);
         }
+        System.out.println("You have 30 seconds to answer.");
         System.out.print("Please select your answer (1 to 4): ");
         questionNo += 1;
 
