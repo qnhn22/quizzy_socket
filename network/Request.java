@@ -66,7 +66,7 @@ public class Request implements Runnable {
         Server.sendQuestionToAllPlayers();
       }
 
-      Thread.sleep(31000);
+      Thread.sleep(8000);
 
       // read answer from a player
       msg = br.readLine();
@@ -104,7 +104,7 @@ public class Request implements Runnable {
     String questionToPlayers = "q" + questionText + ";";
 
     for (int i = 1; i <= 4; i++) {
-      questionToPlayers += i + ". " + question.getAllOpt().get(i - 1) + ";";
+      questionToPlayers += i + ". " + question.getAllOpt()[i - 1] + ";";
     }
 
     os.writeBytes(questionToPlayers + "\n");

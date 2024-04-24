@@ -19,28 +19,15 @@ public final class Server {
     int port = 6789;
     ServerSocket socket = new ServerSocket(port);
 
-    ArrayList<String> optionsQ1 = new ArrayList<>();
-    optionsQ1.add("Earth");
-    optionsQ1.add("Mars");
-    optionsQ1.add("Jupiter");
-    optionsQ1.add("Saturn");
-    Question q1 = new Question("What is the largest planet in our solar system?", optionsQ1, 2);
-    ArrayList<String> optionsQ2 = new ArrayList<>();
-    optionsQ2.add("J.K. Rowling");
-    optionsQ2.add("Stephen King");
-    optionsQ2.add("Harper Lee");
-    optionsQ2.add("George Orwell");
-    Question q2 = new Question("Who wrote 'To Kill a Mockingbird'?", optionsQ2, 1);
-    ArrayList<String> optionsQ3 = new ArrayList<>();
-    optionsQ3.add("Paris");
-    optionsQ3.add("London");
-    optionsQ3.add("Berlin");
-    optionsQ3.add("Rome");
-    Question q3 = new Question("What is the capital of France?", optionsQ3, 0);
     ArrayList<Question> questions = new ArrayList<>();
-    questions.add(q1);
-    questions.add(q2);
-    questions.add(q3);
+    // read all questions from questions.txt file
+    ArrayList<String> rawQuestions = Server.readQuestion();
+    Collections.shuffle(rawQuestions);
+    // get 5 random questions for the game
+    for (int i = 0; i < 5; i++) {
+      Question question = Server.createQuestion(rawQuestions.get(i));
+      questions.add(question);
+    }
 
     game = new Game(questions);
     playerConnections = new ArrayList<>();
@@ -122,5 +109,26 @@ public final class Server {
         System.out.println(e.getMessage());
       }
     }
+  }
+
+  public static Question createQuestion(String text) {
+    String[] arr = text.split(";");
+    String question = arr[0];
+    int answer = Integer.parseInt(arr[5]);
+    String[] options = Arrays.copyOfRange(arr, 1, 5);
+    Question questionObj = new Question(question, options, answer);
+    return questionObj;
+  }
+
+  public static ArrayList<String> readQuestion() throws IOException {
+    ArrayList<String> questions = new ArrayList<>();
+    String filePath = "questions.txt";
+    BufferedReader reader = new BufferedReader(new FileReader(filePath));
+    String line;
+    while ((line = reader.readLine()) != null) {
+      questions.add(line);
+    }
+    reader.close();
+    return questions;
   }
 }

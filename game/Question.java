@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Question {
   private String question;
-  private ArrayList<String> options; // store 4 options for this question with index 0 to 3
+  private String[] options; // store 4 options for this question with index 0 to 3
   private int answer;
 
-  public Question(String question, ArrayList<String> options, int answer) {
+  public Question(String question, String[] options, int answer) {
     this.question = question;
     this.options = options;
     this.answer = answer;
@@ -21,7 +21,7 @@ public class Question {
     this.question = newQues;
   }
 
-  public ArrayList<String> getAllOpt() {
+  public String[] getAllOpt() {
     return this.options;
   }
 
@@ -34,6 +34,6 @@ public class Question {
   }
 
   public String getAnswerText() {
-    return options.get(answer);
+    return options[answer];
   }
 }
