@@ -43,9 +43,9 @@ public final class Server {
     scores = new HashMap<>();
 
     long startTime = System.currentTimeMillis();
-    long duration = 5000; // 5 seconds
+    long duration = 10000; // 10 seconds
 
-    // accept any player connection in 5 seconds
+    // accept any player connection in 10 seconds
     while (System.currentTimeMillis() - startTime <= duration) {
       Socket connection = socket.accept();
 

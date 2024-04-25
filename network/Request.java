@@ -66,7 +66,8 @@ public class Request implements Runnable {
         Server.sendQuestionToAllPlayers();
       }
 
-      Thread.sleep(8000);
+      // allow players to answer in approximately 30 seconds
+      Thread.sleep(31000);
 
       // read answer from a player
       msg = br.readLine();
@@ -78,7 +79,7 @@ public class Request implements Runnable {
 
       sendScore();
 
-      Thread.sleep(3000);
+      Thread.sleep(4000);
 
       if (game.getQuestions().size() - 1 == game.getCurrentQuestion()) {
         if (id == game.getNoPlayers()) {
