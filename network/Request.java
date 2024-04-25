@@ -73,17 +73,17 @@ public class Request implements Runnable {
     os.writeBytes("wWelcome!!!\n");
     os.writeBytes("wYou are player " + id + "\n");
 
-    // Wait for a few seconds before starting the game
+    // Wait for a few seconds before sending the first question
     Thread.sleep(3000);
 
     while (true) {
-      // Send the current question to all players if the player with ID 1 initiates
+      // Send the current question to all players
       if (id == 1) {
         Server.sendQuestionToAllPlayers();
       }
 
       // Allow players to answer in approximately 30 seconds
-      Thread.sleep(8000);
+      Thread.sleep(31000);
 
       // Read the player's answer from the input stream
       String msg = br.readLine();
@@ -113,8 +113,7 @@ public class Request implements Runnable {
         break;
       }
 
-      // Update the current question if the player with ID 1 initiates and there are
-      // more questions
+      // Update the current question if there are more questions
       if (id == 1 && game.getCurrentQuestion() < game.getQuestions().size() - 1) {
         Server.updateCurrentQuestion();
       }
