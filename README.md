@@ -4,14 +4,15 @@
 Welcome to Quizzy, a real-time multiplayer quiz game implemented in Java. Challenge your friends or compete against random opponents in this exciting trivia adventure! Quizzy utilizes Java Datagram and Socket classes to establish a TCP connection between the server and client programs, ensuring smooth communication between players.
 
 ## Features
+- Server-Client Architecture: We use Transmission Control Protocol (TCP) for Quizzy to ensure that the messages are relayed efficiently and reliably between the players and the server. TCP is a standard that defines how to establish and maintain a network conversation. Some of the key features of TCP are (1) Reliability, (2) Ordered delivery, (3) Flow control, and (4) Connection-oriented. This was implemented using Socket class in Java.
 - Real-time multiplayer gameplay.
 - Multiple-choice trivia questions.
-- Server-client architecture for seamless communication using TCP (implemented using Datagram and Socket classes).
-- Multithreading for efficient management of game timelines (using Thread class).
-- Timer functionality to keep track of time per question (using sleep method in Thread).
-- Synchronized functions to ensure data consistency in a multi-threaded environment (using synchronized function).
-- Handle different types of messages in Client program.
-- Send different types of messages including welcome message, questions, scores, and result. Perform answer checking, score recording, and create results based on players' scores.
+- Multithreading for efficient management of multi-player function (using Thread class).
+- Timer functionality to effectively manage the timeline of the game like waiting for players to answer, waiting for the Server to send score to players, and some other (using sleep method in Thread).
+- Synchronized functions to ensure data consistency in a multi-threaded environment (using Java synchronized method).
+- Handle different types of messages in Client program, categorized by adding a character before each message like “q” for question message, “s” for score message, “w” for welcome message, and “r” for result message.
+- The Server sends different types of messages including welcome message, questions, scores, and result. Perform answer checking, score recording, and create results based on players' scores.
+
 
 ## Installation
 To run Quizzy on your local machine, follow these steps:
