@@ -29,8 +29,5 @@ To run Quizzy on your local machine, follow these steps:
 6. The player with the highest score at the end of the game wins.
 
 ## Game Example
-![Player 1](game_player_1.png)
-![Player 2](game_player_2.png)
-
-<img src="game_player_1.png" alt="Game 1" width="200" height="150">
-<img src="game_player_2.png" alt="Game 2" width="200" height="150">
+<img src="game_player_1.png" alt="Game 1" width="400" height="400">
+<img src="game_player_2.png" alt="Game 2" width="400" height="400">
