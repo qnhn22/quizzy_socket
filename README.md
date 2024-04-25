@@ -31,3 +31,6 @@ To run Quizzy on your local machine, follow these steps:
 ## Game Example
 ![Player 1](game_player_1.png)
 ![Player 2](game_player_2.png)
+
+<img src="game_player_1.png" alt="Game 1" width="200" height="150">
+<img src="game_player_2.png" alt="Game 2" width="200" height="150">
