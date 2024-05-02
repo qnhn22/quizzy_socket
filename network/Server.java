@@ -48,7 +48,7 @@ public final class Server {
     ArrayList<String> rawQuestions = readQuestionsFromFile();
     Collections.shuffle(rawQuestions);
     ArrayList<Question> questions = new ArrayList<>();
-    int noQuestions = 5; // Number of questions to select
+    int noQuestions = 3; // Number of questions to select
     int i = 0;
     while (noQuestions > 0 && i < rawQuestions.size()) {
       String rawQuestion = rawQuestions.get(i);
@@ -95,6 +95,7 @@ public final class Server {
       if (connection.isConnected()) {
         playerConnections.add(request); // Add the request handler to the list
         game.updateNoPlayers(); // Increment the number of players
+        System.out.println("Player " + id + " joined");
         id += 1; // Increment the player ID for the next connection
       }
     }
@@ -185,6 +186,7 @@ public final class Server {
    * @return The Question object created from the raw string.
    */
   public static Question createQuestion(String text) {
+    System.out.println(text);
     String[] arr = text.split(";");
     String question = arr[0];
     int answer = Integer.parseInt(arr[5]);

@@ -46,7 +46,22 @@ public class Client {
         System.out.print("Please select your answer (1 to 4): ");
         questionNo += 1;
 
-        answer = inFromUser.readLine(); // Read user's answer
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0;
+        answer = "-1";
+
+        while (elapsedTime < 7000) {
+          if (System.in.available() > 0) {
+            answer = inFromServer.readLine(); // Read user's answer
+            break;
+          }
+          elapsedTime = System.currentTimeMillis() - startTime;
+        }
+
+        if (answer.isEmpty()) {
+          answer = "none";
+          System.out.println("You run out of time!");
+        }
 
         if (answer.length() != 0) {
           outToServer.writeBytes(answer + "\n"); // Send answer to server
