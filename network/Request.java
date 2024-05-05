@@ -83,7 +83,7 @@ public class Request implements Runnable {
       }
 
       // Allow players to answer in approximately 30 seconds
-      Thread.sleep(8000);
+      Thread.sleep(8500);
 
       // Read the player's answer from the input stream
       String msg = br.readLine();
