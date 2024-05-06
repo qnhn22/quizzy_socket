@@ -55,7 +55,8 @@ public class Client {
           inFromUser.readLine();
         }
 
-        while (System.currentTimeMillis() - startTime < 7000) { // Set a timeout of 5 seconds
+        // allow players to answer in ... seconds
+        while (System.currentTimeMillis() - startTime < 7000) {
           if (inFromUser.ready()) {
             answer = inFromUser.readLine();
             System.out.println("You entered: " + answer);

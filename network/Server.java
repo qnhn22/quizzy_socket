@@ -24,9 +24,35 @@ public final class Server {
   public static void main(String argv[]) throws Exception {
     int port = 6789; // Port number for the server
     ServerSocket socket = new ServerSocket(port); // Server socket for accepting connections
+    boolean hostConnected = false;
+    String topics = "";
+    int noQues = 0;
+    int dur = 0;
+
+    while (!hostConnected) {
+      // Hash map for topics
+      Map<Integer, String> topicMap = new HashMap<>();
+
+      // Add items to the HashMap
+      topicMap.put(1, "Science");
+      topicMap.put(2, "Technology");
+      topicMap.put(3, "Sports");
+      topicMap.put(4, "Geography");
+      topicMap.put(5, "History");
+      topicMap.put(6, "Literature");
+
+      // Host set up game
+      String[] settings = setUpGame(socket);
+
+      topics = settings[0]; // quesiton topics
+      noQues = Integer.parseInt(settings[1]); // number of question in a game
+      dur = Integer.parseInt(settings[2]); // time allowed to answer each question
+
+      hostConnected = true;
+    }
 
     // Read questions from file and select random questions for the game
-    ArrayList<Question> questions = selectRandomQuestions();
+    ArrayList<Question> questions = selectRandomQuestions(noQues);
 
     // Initialize game, player connections, and scores
     initializeGame(questions);
@@ -41,21 +67,22 @@ public final class Server {
   /**
    * Selects random questions from a list of questions read from a file.
    *
+   * @param int noOfQuestions is the number of questions to select.
    * @return An ArrayList of randomly selected questions.
    * @throws IOException If an error occurs while reading questions from the file.
    */
-  private static ArrayList<Question> selectRandomQuestions() throws IOException {
+  private static ArrayList<Question> selectRandomQuestions(int noOfQuestions) throws IOException {
     ArrayList<String> rawQuestions = readQuestionsFromFile();
     Collections.shuffle(rawQuestions);
     ArrayList<Question> questions = new ArrayList<>();
-    int noQuestions = 3; // Number of questions to select
+
     int i = 0;
-    while (noQuestions > 0 && i < rawQuestions.size()) {
+    while (noOfQuestions > 0 && i < rawQuestions.size()) {
       String rawQuestion = rawQuestions.get(i);
       if (rawQuestion != null && rawQuestion.length() > 0) {
         Question question = createQuestion(rawQuestion);
         questions.add(question);
-        noQuestions -= 1;
+        noOfQuestions -= 1;
       }
       i += 1;
     }
@@ -210,5 +237,48 @@ public final class Server {
     }
     reader.close(); // Close the file reader
     return questions; // Return the list of questions read from the file
+  }
+
+  public static String[] setUpGame(ServerSocket socket) throws Exception {
+    // Get game setting from the host client
+    Socket connection = socket.accept(); // Accept a connection from the host client
+    InputStream is = connection.getInputStream();
+    // Input stream to receive data from the client
+    DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+    // Output stream to send data to the client
+    BufferedReader br = new BufferedReader(new InputStreamReader(is)); // Set up input stream filters
+
+    // Send welcome message to the player
+    os.writeBytes("wWelcome to Quizzy!!!\n");
+    os.writeBytes("wYou are the host. Let choose game settings!" + "\n");
+
+    Thread.sleep(1000);
+
+    // Topics settings
+    os.writeBytes(
+        "t" + "What topics you want to cover?;Science;Technology;Sports;Geography;History;Literature" + "\n");
+
+    String topics = br.readLine();
+    String[] topicList = topics.split(";");
+    System.out.println("Topics: " + topicList);
+
+    // Number of questions
+    os.writeBytes("n" + "How many questions you want?" + "\n");
+    String noQues = br.readLine();
+    System.out.println(noQues);
+
+    // Answering time for each question
+    os.writeBytes("d" + "How long you want for answering time (in seconds)?" + "\n");
+    String quesDuration = Integer.parseInt(br.readLine()) * 1000 + "";
+    System.out.println(quesDuration);
+
+    br.close();
+    is.close();
+    os.close();
+    connection.close();
+
+    String[] arr = { topics, noQues, quesDuration };
+
+    return arr;
   }
 }
