@@ -12,6 +12,14 @@ Welcome to Quizzy, a real-time multiplayer quiz game implemented in Java. Challe
 - Synchronized functions to ensure data consistency in a multi-threaded environment (using Java synchronized method).
 - Handle different types of messages in Client program, categorized by adding a character before each message like “q” for question message, “s” for score message, “w” for welcome message, and “r” for result message.
 - The Server sends different types of messages including welcome message, questions, scores, and result. Perform answer checking, score recording, and create results based on players' scores.
+- Handle Timeout when the server doesn’t receive an answer from players (clear buffer reader after each
+question).
+- The Server will randomly pick questions.
+- Add Host role to game. A host can select question topics, number of questions, and time allowed for
+each question. (not fully work yet)
+- Quizzes Generation: We use the ChatGPT API (OpenAI, n.d.) to generate quizzes based on a specific
+topic, number of questions, and difficulty level. (We created functions for this but haven’t integrated to
+the game yet)
 
 
 ## Installation
@@ -19,16 +27,18 @@ To run Quizzy on your local machine, follow these steps:
 1. Clone the Quizzy repository.
 2. Compile the Java source files using your preferred Java compiler.
 3. Run the server program on one machine.
-4. Run the client program on multiple machines to join the game.
+4. Run the host program on another machine to set up game.
+5. Run the client program on multiple machines to join the game.
 
 ## How to Play
-1. Launch the Server program.
-2. Launch the Client program on different machines or on different terminals.
-3. Wait for other players to join.
-4. Once the game starts, answer the trivia questions within the allotted time.
-5. Earn points for each correct answer.
-6. The player with the highest score at the end of the game wins.
+1. Launch the Server program (java network/Server).
+2. Launch the Host program (java network/Host) to set up game.
+3. Launch the Client program on different machines or on different terminals (java network/Client).
+4. Wait for other players to join.
+5. Once the game starts, answer the trivia questions within the allotted time.
+6. Earn points for each correct answer.
+7. The player with the highest score at the end of the game wins.
 
 ## Game Example
-<img src="game_player_1.png" alt="Game 1" width="500" height="600">
-<img src="game_player_2.png" alt="Game 2" width="500" height="600">
+<img src="host.png" alt="Game 1" width="500" height="600">
+<img src="game.png" alt="Game 2" width="500" height="600">
