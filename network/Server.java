@@ -3,6 +3,8 @@ package network;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import game.Game;
 import game.Question;
 import network.Request;
@@ -25,26 +27,31 @@ public final class Server {
     int port = 6789; // Port number for the server
     ServerSocket socket = new ServerSocket(port); // Server socket for accepting connections
     boolean hostConnected = false;
-    String topics = "";
+    ArrayList<String> topics = new ArrayList<>();
     int noQues = 0;
     int dur = 0;
 
     while (!hostConnected) {
       // Hash map for topics
-      Map<Integer, String> topicMap = new HashMap<>();
+      Map<String, String> topicMap = new HashMap<>();
 
       // Add items to the HashMap
-      topicMap.put(1, "Science");
-      topicMap.put(2, "Technology");
-      topicMap.put(3, "Sports");
-      topicMap.put(4, "Geography");
-      topicMap.put(5, "History");
-      topicMap.put(6, "Literature");
+      topicMap.put("1", "Science");
+      topicMap.put("2", "Technology");
+      topicMap.put("3", "Sports");
+      topicMap.put("4", "Geography");
+      topicMap.put("5", "History");
+      topicMap.put("6", "Literature");
 
       // Host set up game
       String[] settings = setUpGame(socket);
 
-      topics = settings[0]; // quesiton topics
+      String topicString = settings[0]; // quesiton topics
+      String[] topicIds = topicString.split(",");
+      for (String id : topicIds) {
+        topics.add(topicMap.get(id));
+      }
+
       noQues = Integer.parseInt(settings[1]); // number of question in a game
       dur = Integer.parseInt(settings[2]); // time allowed to answer each question
 
@@ -52,7 +59,7 @@ public final class Server {
     }
 
     // Read questions from file and select random questions for the game
-    ArrayList<Question> questions = selectRandomQuestions(noQues);
+    ArrayList<Question> questions = selectRandomQuestions(noQues, topics);
 
     // Initialize game, player connections, and scores
     initializeGame(questions);
@@ -71,14 +78,21 @@ public final class Server {
    * @return An ArrayList of randomly selected questions.
    * @throws IOException If an error occurs while reading questions from the file.
    */
-  private static ArrayList<Question> selectRandomQuestions(int noOfQuestions) throws IOException {
+  private static ArrayList<Question> selectRandomQuestions(int noOfQuestions, ArrayList<String> topics)
+      throws IOException {
     ArrayList<String> rawQuestions = readQuestionsFromFile();
-    Collections.shuffle(rawQuestions);
-    ArrayList<Question> questions = new ArrayList<>();
 
+    // Filter questions in selected topics
+    List<String> questionsInTopics = rawQuestions.stream()
+        .filter(question -> topics.stream().anyMatch(question::endsWith))
+        .collect(Collectors.toList());
+
+    Collections.shuffle(questionsInTopics);
+
+    ArrayList<Question> questions = new ArrayList<>();
     int i = 0;
-    while (noOfQuestions > 0 && i < rawQuestions.size()) {
-      String rawQuestion = rawQuestions.get(i);
+    while (noOfQuestions > 0 && i < questionsInTopics.size()) {
+      String rawQuestion = questionsInTopics.get(i);
       if (rawQuestion != null && rawQuestion.length() > 0) {
         Question question = createQuestion(rawQuestion);
         questions.add(question);
@@ -218,7 +232,8 @@ public final class Server {
     String question = arr[0];
     int answer = Integer.parseInt(arr[5]);
     String[] options = Arrays.copyOfRange(arr, 1, 5);
-    return new Question(question, options, answer); // Create and return a new Question object
+    String topic = arr[6];
+    return new Question(question, options, answer, topic); // Create and return a new Question object
   }
 
   /**

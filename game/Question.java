@@ -9,6 +9,7 @@ public class Question {
   private String question; // The question text
   private String[] options; // The multiple-choice options
   private int answer; // The index of the correct answer
+  private String topic; // The question topic
 
   /**
    * Constructs a new Question object with the given question text, options, and
@@ -17,11 +18,13 @@ public class Question {
    * @param question The text of the question.
    * @param options  The array of multiple-choice options.
    * @param answer   The index of the correct answer.
+   * @param topic    The topic of the question.
    */
-  public Question(String question, String[] options, int answer) {
+  public Question(String question, String[] options, int answer, String topic) {
     this.question = question;
     this.options = options;
     this.answer = answer;
+    this.topic = topic;
   }
 
   /**
@@ -76,5 +79,12 @@ public class Question {
    */
   public String getAnswerText() {
     return options[answer];
+  }
+
+  /**
+   * @return The question topic.
+   */
+  public String getTopic() {
+    return this.topic;
   }
 }
