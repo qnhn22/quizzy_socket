@@ -1,8 +1,5 @@
 package network;
 
-import java.io.*;
-import java.net.*;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -68,8 +65,6 @@ public class Client {
           System.out.println();
           System.out.println("You ran out of time!");
         }
-
-        // answer = inFromServer.readLine(); // Read user's answer
 
         if (answer.length() != 0) {
           outToServer.writeBytes(answer + "\n"); // Send answer to server

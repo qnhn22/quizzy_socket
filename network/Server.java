@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import game.Game;
 import game.Question;
-import network.Request;
 
 /**
  * Represents the server for the multiplayer quiz game.

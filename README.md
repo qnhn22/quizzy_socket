@@ -16,7 +16,7 @@ Welcome to Quizzy, a real-time multiplayer quiz game implemented in Java. Challe
 question).
 - The Server will randomly pick questions.
 - Add Host role to game. A host can select question topics, number of questions, and time allowed for
-each question. (not fully work yet)
+each question.
 - Quizzes Generation: We use the ChatGPT API (OpenAI, n.d.) to generate quizzes based on a specific
 topic, number of questions, and difficulty level. (We created functions for this but haven’t integrated to
 the game yet)
