@@ -10,17 +10,19 @@ public class Game {
   private Integer curQuestionIdx; // Index of the current question
   private int curAnswer; // Index of the current correct answer
   private int noPlayer; // Number of players participating in the game
+  private int duration; // The duration set up for each question
 
   /**
    * Constructs a new Game object with the given list of questions.
    *
    * @param questions The list of questions for the game.
    */
-  public Game(ArrayList<Question> questions) {
+  public Game(ArrayList<Question> questions, int duration) {
     this.questions = questions;
     this.curQuestionIdx = 0; // Start with the first question
     this.curAnswer = this.questions.get(0).getAnswer(); // Set the current correct answer
     this.noPlayer = 0; // Initialize number of players
+    this.duration = duration;
   }
 
   /**
@@ -92,5 +94,14 @@ public class Game {
    */
   public void updateNoPlayers() {
     this.noPlayer += 1;
+  }
+
+  /**
+   * Returns the duration allowed for each question.
+   *
+   * @return The duration.
+   */
+  public int getDur() {
+    return this.duration;
   }
 }

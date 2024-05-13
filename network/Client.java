@@ -11,6 +11,7 @@ public class Client {
 
     String answer;
     String msg;
+    int questionDur = 0;
 
     // Connect to the server
     Socket clientSocket = new Socket("127.0.0.1", 6789);
@@ -26,8 +27,12 @@ public class Client {
     while (true) {
       msg = inFromServer.readLine(); // Read message from server
 
+      // First message to set up question duration
+      if (msg.startsWith("d")) {
+        questionDur = Integer.parseInt(msg.substring(1));
+      }
       // Handle welcome message
-      if (msg.startsWith("w")) {
+      else if (msg.startsWith("w")) {
         System.out.println(msg.substring(1));
       }
       // Handle question message
@@ -53,7 +58,7 @@ public class Client {
         }
 
         // allow players to answer in ... seconds
-        while (System.currentTimeMillis() - startTime < 7000) {
+        while (System.currentTimeMillis() - startTime < questionDur) {
           if (inFromUser.ready()) {
             answer = inFromUser.readLine();
             System.out.println("You entered: " + answer);

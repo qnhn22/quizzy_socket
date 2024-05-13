@@ -69,6 +69,11 @@ public class Request implements Runnable {
     // Set up input stream filters
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
+    // Send question duration to Clients
+    if (id == 0) {
+      Server.setQuestionDuration();
+    }
+
     // Send welcome message to the player
     os.writeBytes("wWelcome!!!\n");
     os.writeBytes("wYou are player " + id + "\n");
@@ -83,7 +88,7 @@ public class Request implements Runnable {
       }
 
       // Allow players to answer in approximately 30 seconds
-      Thread.sleep(8500);
+      Thread.sleep(game.getDur() + 1500);
 
       // Read the player's answer from the input stream
       String msg = br.readLine();
@@ -160,5 +165,14 @@ public class Request implements Runnable {
    */
   public void sendResult(String result) throws IOException {
     os.writeBytes(result); // Send the game result to the player
+  }
+
+  /**
+   * Method to set up duration for each question.
+   *
+   * @throws IOException If an error occurs.
+   */
+  public void sendQuestionDuration() throws IOException {
+    os.writeBytes("d" + game.getDur() + "\n");
   }
 }

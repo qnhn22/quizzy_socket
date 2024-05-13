@@ -60,8 +60,8 @@ public final class Server {
     // Read questions from file and select random questions for the game
     ArrayList<Question> questions = selectRandomQuestions(noQues, topics);
 
-    // Initialize game, player connections, and scores
-    initializeGame(questions);
+    // Initialize game, player connections, scores, and question duration
+    initializeGame(questions, dur);
 
     // Accept player connections within a specified duration
     acceptPlayerConnections(socket);
@@ -103,12 +103,13 @@ public final class Server {
   }
 
   /**
-   * Initializes the game with the given list of questions.
+   * Initializes the game.
    *
    * @param questions The list of questions for the game.
+   * @param dur       The duration allowed for each question.
    */
-  private static void initializeGame(ArrayList<Question> questions) {
-    game = new Game(questions); // Create a new game instance
+  private static void initializeGame(ArrayList<Question> questions, int dur) {
+    game = new Game(questions, dur); // Create a new game instance
     playerConnections = new ArrayList<>(); // Initialize player connections list
     scores = new HashMap<>(); // Initialize player scores map
   }
@@ -123,12 +124,13 @@ public final class Server {
   private static void acceptPlayerConnections(ServerSocket socket) throws Exception {
     int id = 1; // Initial player ID
     long startTime = System.currentTimeMillis();
-    long duration = 5000; // 10 seconds
+    long waitingTime = 5000; // 10 seconds
 
     // Accept player connections within the specified duration
-    while (System.currentTimeMillis() - startTime <= duration) {
+    while (System.currentTimeMillis() - startTime <= waitingTime) {
       Socket connection = socket.accept(); // Accept a new connection
-      Request request = new Request(connection, game, id, scores); // Create a request handler for the connection
+      Request request = new Request(connection, game, id, scores); // Create a request handler for the
+                                                                   // connection
 
       // Add the request handler to the player connections list if the connection is
       // successful
@@ -253,6 +255,12 @@ public final class Server {
     return questions; // Return the list of questions read from the file
   }
 
+  /**
+   * Communicate with the Host user to set up game.
+   *
+   * @param socket The server socket for accepting connections.
+   * @throws Exception If an error occurs while accepting connections.
+   */
   public static String[] setUpGame(ServerSocket socket) throws Exception {
     // Get game setting from the host client
     Socket connection = socket.accept(); // Accept a connection from the host client
@@ -294,5 +302,18 @@ public final class Server {
     String[] arr = { topics, noQues, quesDuration };
 
     return arr;
+  }
+
+  /**
+   * Set up question duration for the game.
+   */
+  public static synchronized void setQuestionDuration() {
+    for (Request player : playerConnections) {
+      try {
+        player.sendQuestionDuration();
+      } catch (Exception e) {
+        System.out.println(e.getMessage()); // Handle any exceptions
+      }
+    }
   }
 }
