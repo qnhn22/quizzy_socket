@@ -29,7 +29,9 @@ public class Client {
 
       // First message to set up question duration
       if (msg.startsWith("d")) {
+        System.out.println(questionDur);
         questionDur = Integer.parseInt(msg.substring(1));
+        System.out.println(questionDur);
       }
       // Handle welcome message
       else if (msg.startsWith("w")) {

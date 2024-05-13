@@ -70,7 +70,8 @@ public class Request implements Runnable {
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
     // Send question duration to Clients
-    if (id == 0) {
+    if (id == 1) {
+      System.out.println(game.getDur());
       Server.setQuestionDuration();
     }
 
